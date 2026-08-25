@@ -3,6 +3,25 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const tasks = [
+    {
+        id: 1,
+        title: "Learn Node.js",
+        done: false
+    },
+    {
+        id: 2,
+        title: "Build a Rest API",
+        done: false
+    },
+    {
+        id: 3,
+        title: "Learn Git",
+        done: false
+    }
+]
+
+
 app.get('/', (req, res) => {
     res.json({
         "name": "Task API",
@@ -15,6 +34,23 @@ app.get('/health', (req, res) => {
     res.json({
         "status": "ok"
     });
+});
+
+app.get('/tasks', (req, res) => {
+    res.json(tasks);
+});
+
+app.get('/tasks/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const task = tasks.find(task => task.id === id);
+
+    if(!task) {
+        return res.status(404).json({
+            error: `Task ${id} not found`
+        });
+    }
+
+    res.json(task);
 });
 
 app.listen(port, ()=> {
