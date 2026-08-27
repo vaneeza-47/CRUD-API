@@ -39,8 +39,39 @@ function createTask(title) {
     return newTask;
 }
 
+// update tasks
+function updateTask(id, updates) {
+    const updatedTask = tasks.find(task => task.id === id);
+    if(!updatedTask) {
+        return updatedTask;
+    }
+    if("title" in updates) {
+        updatedTask.title = updates.title;
+    }
+
+    if("done" in updates) {
+        updatedTask.done = updates.done;    
+    }
+
+    return updatedTask;
+}
+
+// delete tasks
+function deleteTask(id) {
+    const deletedTask = tasks.find(task => task.id === id);
+    if(!deletedTask) {
+        return deletedTask;
+    }
+    const deleteItemIndex = tasks.findIndex(task => task.id === deletedTask.id);
+    tasks.splice(deleteItemIndex, 1);
+
+    return deletedTask;
+}
+
 module.exports = {
     getAllTasks,
     getTaskById,
-    createTask
+    createTask,
+    updateTask,
+    deleteTask
 }
