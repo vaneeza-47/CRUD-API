@@ -1,3 +1,4 @@
+```markdown
 # Task API
 
 This is a simple API that manages a to-do list. You can create tasks, read them, update them, and delete them (CRUD operations).
@@ -45,3 +46,18 @@ Content-Type: application/json; charset=utf-8
 ## Note
 
 Tasks are stored in memory only. If you restart the server, all changes are lost.
+
+## Note for Windows PowerShell Users
+
+If you're using PowerShell on Windows, use `Invoke-RestMethod` instead of `curl`:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/tasks -Method Post -ContentType "application/json" -Body '{"title":"Buy milk"}'
+```
+
+For other requests:
+
+- **GET**: `Invoke-RestMethod -Uri http://localhost:3000/tasks`
+- **PUT**: `Invoke-RestMethod -Uri http://localhost:3000/tasks/1 -Method Put -ContentType "application/json" -Body '{"done":true}'`
+- **DELETE**: `Invoke-RestMethod -Uri http://localhost:3000/tasks/1 -Method Delete`
+```
