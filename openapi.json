@@ -175,6 +175,8 @@
       },
       "UpdateTask": {
         "type": "object",
+        "description" : "Atleast one field must be provided",
+        "minProperties" : 1,
         "properties": {
           "title": {
             "type": "string",

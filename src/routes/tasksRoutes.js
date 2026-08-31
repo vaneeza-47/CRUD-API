@@ -40,10 +40,26 @@ expressRouter.put('/:id', (req, res) => {
     const title = updates.title;
     const done = updates.done;
 
-    if (!title || title.trim() === "") {
+    if (Object.keys(updates).length === 0) {
         return res.status(400).json({
-            error: "Invalid title name"
-        });
+            error: "Nothing to update"
+        })
+    }
+
+    if ("title" in updates) {
+            if (!title || title.trim() === "") {
+                return res.status(400).json({
+                error: "Invalid title name"
+            });
+        }
+    }
+
+    if ("done" in updates) {
+        if (typeof done !== "boolean") {
+            return res.status(400).json({
+                error: "Invalid done status (Use Boolean Values)"
+            })
+        }
     }
 
     const updatedTask = taskService.updateTask(id, updates);
