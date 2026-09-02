@@ -1,71 +1,48 @@
-// Dummy tasks
-const tasks = [
-    {
-        id: 1,
-        title: "Learn Node.js",
-        done: false
-    },
-    {
-        id: 2,
-        title: "Build a Rest API",
-        done: false
-    },
-    {
-        id: 3,
-        title: "Learn Git",
-        done: false
-    }
-]
+const db = require("./database.js");
 
 function getAllTasks(){
-    return tasks;
+    const selectTasks = db.prepare(`SELECT * FROM tasks`).all();
+    return selectTasks;
 }
 
 function getTaskById(id) {
-    const task = tasks.find(task => task.id === id);
-    return task;
+    const taskById = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(id);
+    return taskById;
 }
 
 // create tasks
 function createTask(title) {
-    const newId = tasks.at(-1).id + 1;
-    const newTask = {
-        title: title,
-        id: newId,
-        done: false
-    }
-
-    tasks.push(newTask);
+    const prepareData = db.prepare(`INSERT INTO tasks (title, done) VALUES (?, ?)`).run(title, 0);
+    const newID = prepareData.lastInsertRowid;
+    const newTask = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(newID);
     return newTask;
 }
 
 // update tasks
 function updateTask(id, updates) {
-    const updatedTask = tasks.find(task => task.id === id);
-    if(!updatedTask) {
-        return updatedTask;
-    }
-    if("title" in updates) {
-        updatedTask.title = updates.title;
+    const existingTask = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(id);
+    if(!existingTask) {
+        return null;
     }
 
-    if("done" in updates) {
-        updatedTask.done = updates.done;    
-    }
+    const updateTaskSQL = db.prepare(`UPDATE tasks SET title = ?, done = ?
+        WHERE id = ?`).run(updates.title, updates.done, id);
 
+    const updatedTask = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(id);
+    
     return updatedTask;
 }
 
 // delete tasks
 function deleteTask(id) {
-    const deletedTask = tasks.find(task => task.id === id);
-    if(!deletedTask) {
-        return deletedTask;
+    const task = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(id);
+    
+    if (!task) {
+        return null;
     }
-    const deleteItemIndex = tasks.findIndex(task => task.id === deletedTask.id);
-    tasks.splice(deleteItemIndex, 1);
-
-    return deletedTask;
+    
+    db.prepare(`DELETE FROM tasks WHERE id = ?`).run(id);
+    return task;
 }
 
 module.exports = {
