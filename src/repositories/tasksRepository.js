@@ -25,8 +25,14 @@ function updateTask(id, updates) {
         return null;
     }
 
-    const updateTaskSQL = db.prepare(`UPDATE tasks SET title = ?, done = ?
-        WHERE id = ?`).run(updates.title, updates.done, id);
+    if ("title" in updates) {
+        const title = updates.title;
+        const updateTitleSQL = db.prepare(`UPDATE tasks SET title = ? WHERE id = ?`).run(title, id);
+    }
+    if ("done" in updates) {
+        const done = updates.done;
+        const updateDoneSQL = db.prepare(`UPDATE tasks SET done = ? WHERE id = ?`).run(done, id);
+    }
 
     const updatedTask = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(id);
     
