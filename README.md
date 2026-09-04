@@ -1,63 +1,99 @@
+## README.md
+
 ```markdown
 # Task API
 
-This is a simple API that manages a to-do list. You can create tasks, read them, update them, and delete them (CRUD operations).
+A RESTful CRUD API for managing tasks with SQLite persistence.
 
-## Getting Started
+## Why SQLite?
 
-### What you need
-- Node.js installed on your computer ([download here](https://nodejs.org/))
+- **Single file** – Entire database is one file (`tasks.db`)
+- **Zero setup** – No separate database server needed
+- **Survives restarts** – Data persists after server restarts
 
-### How to run
-1. Open terminal in the project folder 
-2. Install dependencies using command `npm install`
-3. Start the server by using command `node index.js`
-4. Open your browser and go to `http://localhost:3000`
+## Quick Start
+
+```bash
+npm install
+node index.js
+```
+
+Server runs at `http://localhost:3000`
+
+## Database
+
+- **File:** `tasks.db` (created automatically on first run)
+- **Git ignored** – Each fresh clone starts clean
+- **View with:** [DB Browser for SQLite](https://sqlitebrowser.org/)
+
+![Database Screenshot](database-screenshot.png)
+
+### Seeded Data
+
+On first run, three example tasks are created:
+1. Learn better-sqlite3
+2. Eat more ice-cream
+3. Complete assignment 2
+
+### Example SQL Query
+
+```sql
+SELECT * FROM tasks WHERE done = 0;
+```
+
+Returns all incomplete tasks.
 
 ## API Endpoints
 
-| Method | Endpoint | What it does | Success | Errors |
-|--------|----------|--------------|---------|--------|
-| GET | `/` | Shows API info | 200 | - |
-| GET | `/health` | Health check | 200 | - |
-| GET | `/tasks` | Get all tasks | 200 | - |
-| GET | `/tasks/:id` | Get one task | 200 | 404 |
-| POST | `/tasks` | Create a task | 201 | 400 |
-| PUT | `/tasks/:id` | Update a task | 200 | 400, 404 |
-| DELETE | `/tasks/:id` | Delete a task | 204 | 404 |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/tasks` | Get all tasks |
+| GET | `/tasks/:id` | Get one task |
+| POST | `/tasks` | Create a task |
+| PUT | `/tasks/:id` | Update a task |
+| DELETE | `/tasks/:id` | Delete a task |
 
-## Swagger UI
+## Docs
 
-Interactive documentation is available at `http://localhost:3000/docs`
+Interactive API docs: `http://localhost:3000/docs`
 
-![Swagger UI Screenshot](taskAPIScreenshot.png)
+## Examples
 
-## Example
-
+### Create a task
 ```bash
-$ curl -i http://localhost:3000/tasks/1
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{"id":1,"title":"Learn Node.js","done":false}
+curl -X POST http://localhost:3000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Learn SQL"}'
 ```
 
-## Note
+### Get all tasks
+```bash
+curl http://localhost:3000/tasks
+```
 
-Tasks are stored in memory only. If you restart the server, all changes are lost.
+### Update a task
+```bash
+curl -X PUT http://localhost:3000/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"done":true}'
+```
 
-## Note for Windows PowerShell Users
+### Delete a task
+```bash
+curl -X DELETE http://localhost:3000/tasks/1
+```
 
-If you're using PowerShell on Windows, use `Invoke-RestMethod` instead of `curl`:
+## PowerShell Users
+
+Use `Invoke-RestMethod` instead of `curl`:
 
 ```powershell
-Invoke-RestMethod -Uri http://localhost:3000/tasks -Method Post -ContentType "application/json" -Body '{"title":"Buy milk"}'
+Invoke-RestMethod -Method POST -Uri http://localhost:3000/tasks -ContentType "application/json" -Body '{"title":"Buy milk"}'
 ```
 
-For other requests:
+## Tech Stack
 
-- **GET**: `Invoke-RestMethod -Uri http://localhost:3000/tasks`
-- **PUT**: `Invoke-RestMethod -Uri http://localhost:3000/tasks/1 -Method Put -ContentType "application/json" -Body '{"done":true}'`
-- **DELETE**: `Invoke-RestMethod -Uri http://localhost:3000/tasks/1 -Method Delete`
+- Node.js + Express
+- better-sqlite3
+- Swagger UI
 ```

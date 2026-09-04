@@ -9,7 +9,7 @@ db.pragma('cache_size = 0');
 const createTable = `CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
-    done INTEGER
+    done INTEGER DEFAULT 0
 )`;
 
 db.exec(createTable);

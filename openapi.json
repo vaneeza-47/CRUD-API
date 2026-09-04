@@ -156,7 +156,7 @@
             "example": "Learn Node.js"
           },
           "done": {
-            "type": "boolean",
+            "type": "integer",
             "example": false
           }
         }

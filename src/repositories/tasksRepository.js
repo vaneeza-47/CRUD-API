@@ -12,10 +12,9 @@ function getTaskById(id) {
 
 // create tasks
 function createTask(title) {
-    const prepareData = db.prepare(`INSERT INTO tasks (title, done) VALUES (?, ?)`).run(title, 0);
-    const newID = prepareData.lastInsertRowid;
-    const newTask = db.prepare(`SELECT * FROM tasks WHERE id = ?`).get(newID);
-    return newTask;
+    const done = 0;
+    const prepareData = db.prepare(`INSERT INTO tasks (title, done) VALUES (?, ?)`).run(title, done);
+    return prepareData;
 }
 
 // update tasks
