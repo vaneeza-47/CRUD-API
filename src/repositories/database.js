@@ -1,7 +1,10 @@
 const sqlite = require("better-sqlite3");
 
 // Initiate Database
-const db = new sqlite.Database('tasks.db');
+const db = sqlite('tasks.db');
+db.pragma('journal_mode = WAL');
+db.pragma('synchronous = NORMAL');
+db.pragma('cache_size = 0');
 
 const createTable = `CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,7 +15,7 @@ const createTable = `CREATE TABLE IF NOT EXISTS tasks (
 db.exec(createTable);
 console.log("Tasks Table Ready!");
 
-const count = db.prepare(`SELECT COUNT(*) FROM tasks`).get();
+const count = db.prepare(`SELECT COUNT(*) as count FROM tasks`).get();
 
 // Dummy tasks if table is empty
 if (count.count === 0) {
