@@ -1,6 +1,5 @@
 ## README.md
 
-```markdown
 # Task API
 
 A RESTful CRUD API for managing tasks with SQLite persistence.
@@ -113,4 +112,3 @@ Invoke-RestMethod -Method DELETE -Uri http://localhost:3000/tasks/1
 - Node.js + Express
 - better-sqlite3
 - Swagger UI
-```
