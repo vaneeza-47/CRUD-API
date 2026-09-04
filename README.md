@@ -21,8 +21,6 @@ Server runs at `http://localhost:3000`
 
 ## Database
 
-- **File:** `tasks.db` (created automatically on first run)
-- **Git ignored** – Each fresh clone starts clean
 - **View with:** [DB Browser for SQLite](https://sqlitebrowser.org/)
 
 ![Database Screenshot](database-screenshot.png)
