@@ -53,9 +53,11 @@ Returns all incomplete tasks.
 | PUT | `/tasks/:id` | Update a task |
 | DELETE | `/tasks/:id` | Delete a task |
 
-## Docs
+## API Documentation
 
-Interactive API docs: `http://localhost:3000/docs`
+Interactive Swagger UI documentation is available at `http://localhost:3000/docs`
+
+![Swagger UI Screenshot](taskAPIScreenshot.png)
 
 ## Examples
 
@@ -69,6 +71,11 @@ curl -X POST http://localhost:3000/tasks \
 ### Get all tasks
 ```bash
 curl http://localhost:3000/tasks
+```
+
+### Get a specific task
+```bash
+curl http://localhost:3000/tasks/1
 ```
 
 ### Update a task
@@ -88,7 +95,17 @@ curl -X DELETE http://localhost:3000/tasks/1
 Use `Invoke-RestMethod` instead of `curl`:
 
 ```powershell
+# Create a task
 Invoke-RestMethod -Method POST -Uri http://localhost:3000/tasks -ContentType "application/json" -Body '{"title":"Buy milk"}'
+
+# Get all tasks
+Invoke-RestMethod -Method GET -Uri http://localhost:3000/tasks
+
+# Update a task
+Invoke-RestMethod -Method PUT -Uri http://localhost:3000/tasks/1 -ContentType "application/json" -Body '{"done":true}'
+
+# Delete a task
+Invoke-RestMethod -Method DELETE -Uri http://localhost:3000/tasks/1
 ```
 
 ## Tech Stack
