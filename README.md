@@ -48,6 +48,12 @@ Content-Type: application/json; charset=utf-8
 [{"id":1,"title":"Learn Docker commands","done":false},{"id":2,"title":"Learn new JS syntax","done":false},{"id":3,"title":"Deal with bellyache","done":false}]
 ```
 
+## API Documentation
+
+Interactive Swagger UI available at `http://localhost:3000/docs`
+
+![Swagger UI Screenshot](taskAPIScreenshot.png)
+
 ## Database Screenshot
 
 ![Database Screenshot](database-screenshot.png)
