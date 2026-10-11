@@ -1,112 +1,68 @@
-## README.md
-
 # Task API
 
-A RESTful CRUD API for managing tasks with SQLite persistence.
-
-## Why SQLite?
-
-- **Single file** – Entire database is one file (`tasks.db`)
-- **Zero setup** – No separate database server needed
-- **Survives restarts** – Data persists after server restarts
+A RESTful CRUD API for managing tasks, running on PostgreSQL inside Docker.
 
 ## Quick Start
 
-```bash
-npm install
-node index.js
+1. Copy the environment file:
+```
+cp .env.example .env
 ```
 
-Server runs at `http://localhost:3000`
-
-## Database
-
-- **View with:** [DB Browser for SQLite](https://sqlitebrowser.org/)
-
-![Database Screenshot](database-screenshot.png)
-
-### Seeded Data
-
-On first run, three example tasks are created:
-1. Learn better-sqlite3
-2. Eat more ice-cream
-3. Complete assignment 2
-
-### Example SQL Query
-
-```sql
-SELECT * FROM tasks WHERE done = 0;
+2. Start the whole stack with one command:
+```
+docker compose up
 ```
 
-Returns all incomplete tasks.
+Server runs at `http://localhost:3000`  
+Swagger UI available at `http://localhost:3000/docs`
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and set the following:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DATABASE_URL` | Postgres connection string | `postgres://postgres:dev@localhost:5432/tasks` |
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/tasks` | Get all tasks |
-| GET | `/tasks/:id` | Get one task |
-| POST | `/tasks` | Create a task |
-| PUT | `/tasks/:id` | Update a task |
-| DELETE | `/tasks/:id` | Delete a task |
+| Method | Endpoint | Description | Success Code |
+|--------|----------|-------------|--------------|
+| GET | `/tasks` | Get all tasks | 200 |
+| GET | `/tasks/:id` | Get one task | 200 |
+| POST | `/tasks` | Create a task | 201 |
+| PUT | `/tasks/:id` | Update a task | 200 |
+| DELETE | `/tasks/:id` | Delete a task | 204 |
 
-## API Documentation
+## Example Request
 
-Interactive Swagger UI documentation is available at `http://localhost:3000/docs`
-
-![Swagger UI Screenshot](taskAPIScreenshot.png)
-
-## Examples
-
-### Create a task
-```bash
-curl -X POST http://localhost:3000/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Learn SQL"}'
+```
+curl -i http://localhost:3000/tasks
 ```
 
-### Get all tasks
-```bash
-curl http://localhost:3000/tasks
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+[{"id":1,"title":"Learn Docker commands","done":false},{"id":2,"title":"Learn new JS syntax","done":false},{"id":3,"title":"Deal with bellyache","done":false}]
 ```
 
-### Get a specific task
-```bash
-curl http://localhost:3000/tasks/1
-```
+## Database Screenshot
 
-### Update a task
-```bash
-curl -X PUT http://localhost:3000/tasks/1 \
-  -H "Content-Type: application/json" \
-  -d '{"done":true}'
-```
+![Database Screenshot](database-screenshot.png)
 
-### Delete a task
-```bash
-curl -X DELETE http://localhost:3000/tasks/1
-```
+## Seeded Data
 
-## PowerShell Users
-
-Use `Invoke-RestMethod` instead of `curl`:
-
-```powershell
-# Create a task
-Invoke-RestMethod -Method POST -Uri http://localhost:3000/tasks -ContentType "application/json" -Body '{"title":"Buy milk"}'
-
-# Get all tasks
-Invoke-RestMethod -Method GET -Uri http://localhost:3000/tasks
-
-# Update a task
-Invoke-RestMethod -Method PUT -Uri http://localhost:3000/tasks/1 -ContentType "application/json" -Body '{"done":true}'
-
-# Delete a task
-Invoke-RestMethod -Method DELETE -Uri http://localhost:3000/tasks/1
-```
+On first run, three example tasks are created automatically:
+1. Learn Docker commands
+2. Learn new JS syntax
+3. Deal with bellyache
 
 ## Tech Stack
 
 - Node.js + Express
-- better-sqlite3
+- PostgreSQL (via Docker)
+- pg (node-postgres)
+- Docker Compose
 - Swagger UI
