@@ -3,14 +3,15 @@ const expressRouter = express.Router();
 const taskService = require('../services/taskService');
 
 // display current tasks
-expressRouter.get('/', (req, res) => {
-    return res.json(taskService.getTasks());
+expressRouter.get('/', async (req, res) => {
+    const tasks = await taskService.getTasks();
+    return res.json(tasks);
 });
 
 // display specific task
-expressRouter.get('/:id', (req, res) => {
+expressRouter.get('/:id', async (req, res) => {
     const id = Number(req.params.id);
-    const task = taskService.getTaskById(id);
+    const task = await taskService.getTaskById(id);
 
     if(!task) {
         return res.status(404).json({
@@ -22,19 +23,19 @@ expressRouter.get('/:id', (req, res) => {
 });
 
 // create task
-expressRouter.post('/', (req, res) => {
+expressRouter.post('/', async (req, res) => {
     const title = req.body.title;
     if (!title || title.trim() === "") {
         return res.status(400).json({
             error: "Invalid title name"
         });
     }
-    const createdTask = taskService.createTask(title);
+    const createdTask = await taskService.createTask(title);
     return res.status(201).json(createdTask);
 });
 
 // update task
-expressRouter.put('/:id', (req, res) => {
+expressRouter.put('/:id', async (req, res) => {
     const id = Number(req.params.id);
     const updates = req.body;
     const title = updates.title;
@@ -62,7 +63,7 @@ expressRouter.put('/:id', (req, res) => {
         }
     }
 
-    const updatedTask = taskService.updateTask(id, updates);
+    const updatedTask = await taskService.updateTask(id, updates);
 
     if(!updatedTask) {
         return res.status(404).json({
@@ -74,9 +75,9 @@ expressRouter.put('/:id', (req, res) => {
 });
 
 //delete task
-expressRouter.delete('/:id', (req, res) => {
+expressRouter.delete('/:id', async (req, res) => {
     const id = Number(req.params.id);
-    const deletedTask = taskService.deleteTask(id);
+    const deletedTask = await taskService.deleteTask(id);
 
     if(!deletedTask) {
         return res.status(404).json({

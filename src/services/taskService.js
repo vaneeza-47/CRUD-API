@@ -1,28 +1,28 @@
 const taskRepository = require("../repositories/tasksRepository");
 
 // display current tasks
-function getTasks() {
-    return taskRepository.getAllTasks();
+async function getTasks() {
+    return await taskRepository.getAllTasks();
 }
 
 // display specific task
-function getTaskById(id) {
-    return taskRepository.getTaskById(id);
+async function getTaskById(id) {
+    return await taskRepository.getTaskById(id);
 }
 
 // create task
-function createTask(title) {
-    return taskRepository.createTask(title);
+async function createTask(title) {
+    return await taskRepository.createTask(title);
 }
 
 // update task
-function updateTask(id, updates) {
-    return taskRepository.updateTask(id, updates);
+async function updateTask(id, updates) {
+    return await taskRepository.updateTask(id, updates);
 }
 
 //delete task 
-function deleteTask(id) {
-    return taskRepository.deleteTask(id);
+async function deleteTask(id) {
+    return await taskRepository.deleteTask(id);
 }
 
 module.exports = {
