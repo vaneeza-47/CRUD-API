@@ -5,6 +5,7 @@ const taskService = require('../services/taskService');
 // display current tasks
 expressRouter.get('/', async (req, res) => {
     const tasks = await taskService.getTasks();
+    console.log(`GET /tasks - returned ${tasks.length} tasks`)
     return res.json(tasks);
 });
 
@@ -14,11 +15,13 @@ expressRouter.get('/:id', async (req, res) => {
     const task = await taskService.getTaskById(id);
 
     if(!task) {
+        console.log(`GET /tasks/${id} - not found`);
         return res.status(404).json({
             error: `Task ${id} not found`
         });
     }
 
+    console.log(`GET /tasks/${id} - found task`)
     return res.json(task);
 });
 
@@ -31,6 +34,7 @@ expressRouter.post('/', async (req, res) => {
         });
     }
     const createdTask = await taskService.createTask(title);
+    console.log(`POST /tasks - created task id ${createdTask.id}`)
     return res.status(201).json(createdTask);
 });
 
@@ -66,11 +70,12 @@ expressRouter.put('/:id', async (req, res) => {
     const updatedTask = await taskService.updateTask(id, updates);
 
     if(!updatedTask) {
+        console.log(`PUT /tasks/${id} - not found`);
         return res.status(404).json({
             error: `Task ${id} not found`
         });
     }
-
+    console.log(`PUT /tasks/${id} - updated task`)
     return res.status(200).json(updatedTask);
 });
 
@@ -80,11 +85,12 @@ expressRouter.delete('/:id', async (req, res) => {
     const deletedTask = await taskService.deleteTask(id);
 
     if(!deletedTask) {
+        console.log(`DELETE /tasks/${id} - not found`);
         return res.status(404).json({
             error: `Task ${id} not found`
         });
     }
-
+    console.log(`DELETE /tasks/${id} - deleted task`);
     return res.sendStatus(204);
 });
 
